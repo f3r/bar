@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <title><%- title %></title>
+  	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700,800' rel='stylesheet' type='text/css'>
+	  <link href='http://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+  
+
+    <!-- Bootstrap core CSS -->
+    <link href="js/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	  <link rel="stylesheet" href="fonts/font-awesome-4/css/font-awesome.min.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <![endif]-->
+	  <link rel="stylesheet" type="text/css" href="js/jquery.gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="js/jquery.nanoscroller/nanoscroller.css" />
+    <link rel="stylesheet" type="text/css" href="js/jquery.easypiechart/jquery.easy-pie-chart.css" />
+	  <link rel="stylesheet" type="text/css" href="js/bootstrap.switch/bootstrap-switch.css" />
+  	<link rel="stylesheet" type="text/css" href="js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" />
+	  <link rel="stylesheet" type="text/css" href="js/jquery.select2/select2.css" />
+  	<link rel="stylesheet" type="text/css" href="js/bootstrap.slider/css/slider.css" />
+  	<link rel="stylesheet" type="text/css" href="js/intro.js/introjs.css" />
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=aapl-ohlcv.json&callback=?', function(data) {
+
+        var ohlc = [], volume = [],			dataLength = data.length;
+          
+        for (i = 0; i < dataLength; i++) {
+          ohlc.push([
+            data[i][0], // the date
+            data[i][1], // open
+            data[i][2], // high
+            data[i][3], // low
+            data[i][4] // close
+          ]);
+          
+          volume.push([
+            data[i][0], // the date
+            data[i][5] // the volume
+          ])
+        }
+    
+        // set the allowed units for data grouping
+        var groupingUnits = [[
+          'week',                         // unit name
+          [1]                             // allowed multiples
+        ], [
+          'month',
+          [1, 2, 3, 4, 6]
+        ]];
+    
+        // create the chart
+        $('#container').highcharts('StockChart', {
+            
+            rangeSelector: {
+                selected: 1
+            },
+    
+            title: {
+                text: 'AAPL Historical'
+            },
+    
+            yAxis: [{
+                title: {
+                    text: 'OHLC'
+                },
+                height: 200,
+                lineWidth: 2
+            }, {
+                title: {
+                    text: 'Volume'
+                },
+                top: 300,
+                height: 100,
+                offset: 0,
+                lineWidth: 2
+            }],
+            
+            series: [{
+                type: 'candlestick',
+                name: 'AAPL',
+                data: ohlc,
+                dataGrouping: {
+              units: groupingUnits
+                }
+            }, {
+                type: 'column',
+                name: 'Volume',
+                data: volume,
+                yAxis: 1,
+                dataGrouping: {
+              units: groupingUnits
+                }
+            }]
+          });
+        });
+      });
+    </script>
+</head>
+<body>
+
+  <!-- Fixed navbar -->
+  <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+    <%- partial('site/partials/navbar')%>
+  </div>
+
+  <div id="cl-wrapper" class="fixed-menu">
+    <%- partial('site/partials/sidebar')%>
+    <div class="container-fluid" id="pcont">
+      <div class="cl-mcont">
+        <script type="text/javascript" src="js/highstock.src.js"></script>
+        <script type="text/javascript" src="js/modules/exporting.js"></script>
+
+          <div id="container" style="height: 500px; min-width: 500px"></div>
+      </div>
+    </div>
+	</div>
+
+
+  <script type="text/javascript" src="js/jquery.gritter/js/jquery.gritter.min.js"></script>
+  <script type="text/javascript" src="js/jquery.nanoscroller/jquery.nanoscroller.js"></script>
+  <script type="text/javascript" src="js/behaviour/general.js"></script>
+  <script type="text/javascript" src="js/jquery.ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/jquery.sparkline/jquery.sparkline.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easypiechart/jquery.easy-pie-chart.js"></script>
+	<script type="text/javascript" src="js/jquery.nestable/jquery.nestable.js"></script>
+	<script type="text/javascript" src="js/bootstrap.switch/bootstrap-switch.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="js/jquery.select2/select2.min.js"></script>
+  <!-- <script type="text/javascript" src="js/skycons/skycons.js"></script> -->
+  <script type="text/javascript" src="js/bootstrap.slider/js/bootstrap-slider.js"></script>
+  <!-- <script type="text/javascript" src="js/intro.js/intro.js"></script> -->
+  <script type="text/javascript" src="/js/socket.io.js"></script> <!-- Bring in the socket.io client -->
+  <script type="text/javascript" src="/js/sails.io.js"></script>  <!-- then beef it up with some convenience logic for talking to Sails.js -->
+  <script type="text/javascript" src="/js/app.js"></script>       <!-- listen on socket.io for incoming messages -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        //initialize the javascript
+        App.init();
+        App.dashBoard();        
+        
+        //  introJs().setOption('showBullets', false).start();
+
+      });
+    </script>
+
+  <script type="text/javascript" src="js/behaviour/voice-commands.js"></script>
+  <script type="text/javascript" src="js/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.flot/jquery.flot.js"></script>
+	<script type="text/javascript" src="js/jquery.flot/jquery.flot.pie.js"></script>
+	<script type="text/javascript" src="js/jquery.flot/jquery.flot.resize.js"></script>
+	<script type="text/javascript" src="js/jquery.flot/jquery.flot.labels.js"></script>
+  </body>
+</html>
